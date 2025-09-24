@@ -1,8 +1,6 @@
 Node modules
 node_modules
 # Keep environment variables out of version control
-.env
-.env.* #ignores .env.local, .env.dev, etc.
 
 # Logs
 logs/
@@ -16,5 +14,3 @@ build/
 .DS_store
 Thumbs.db
 
-# Prisma generated client
-/src/generated/prisma/
