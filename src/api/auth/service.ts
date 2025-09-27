@@ -1,34 +1,53 @@
-export type User = {
-  id: number;
-  name: string;
+  
+import { supabase } from "../auth/supabaseClient.js";
+
+interface RegisterInput {
   email: string;
   password: string;
-  role: string;
-  createdAt: Date;
-};
+  display_name?: string;
+}
 
-const users: User[] = [];
-
-export const createUser = async (data: {
-  name: string;
+interface LoginInput {
   email: string;
   password: string;
-  role?: string;
-}): Promise<User> => {
-  const user: User = {
-    id: users.length + 1,
-    name: data.name,
-    email: data.email,
-    password: data.password,
-    role: data.role || 'Submitter',
-    createdAt: new Date(),
-  };
-  users.push(user);
-  return user;
-};
+}
 
- 
-export const findUserByEmail = async (email: string): Promise<User | null> => {
-  const user = users.find(u => u.email === email);
-  return user || null;
-};
+export async function register(input: RegisterInput) {
+  const { email, password, display_name } = input;
+
+  
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        display_name,  
+      },
+    },
+  });
+  if (error) {
+    throw error;
+  }
+  return data;   
+}
+
+export async function login(input: LoginInput) {
+  const { email, password } = input;
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+  if (error) {
+    throw error;
+  }
+  return data;  
+}
+
+export async function getUserFromToken(accessToken: string) {
+  const { data, error } = await supabase.auth.getUser(accessToken);
+  if (error) {
+    throw error;
+  }
+  return data.user;
+}

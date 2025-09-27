@@ -2,13 +2,15 @@
   "name": "collaborative-code-review-platform",
   "version": "1.0.0",
   "description": "An API-driven collaborative code review platform (TypeScript / Node.js / Express / WebSocket)",
+  "type": "module",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev": "ts-node-dev --esm --respawn --transpile-only src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node --env-file=.env dist/server.js",
     "lint": "eslint . --ext .ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "gen-types": "supabase gen types typescript --schema public > src/database.types.ts"
   },
   "keywords": [
     "code-review",
@@ -20,25 +22,29 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@supabase/supabase-js": "^2.58.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
     "express": "^4.18.2",
     "helmet": "^7.0.0",
     "jsonwebtoken": "^9.0.0",
+    "mysql2": "^3.15.1",
+    "pg": "^8.16.3",
     "socket.io": "^4.8.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
     "@types/bcryptjs": "^2.4.2",
+    "@types/dotenv": "^6.1.1",
     "@types/express": "^4.17.0",
     "@types/helmet": "^0.0.48",
     "@types/jsonwebtoken": "^9.0.0",
-    "@types/morgan": "^1.9.10",
     "@types/node": "^20.0.0",
     "eslint": "^8.0.0",
     "morgan": "^1.10.0",
     "prettier": "^3.0.0",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.9.2"
   }
 }
