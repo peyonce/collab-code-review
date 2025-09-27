@@ -1,3 +1,4 @@
+
 export interface Database {
   public: {
     Tables: {
@@ -21,7 +22,7 @@ export interface Database {
           created_at?: string;
         };
       };
-       
+
       profiles: {
         Row: {
           id: string;
@@ -39,16 +40,33 @@ export interface Database {
           bio?: string | null;
         };
       };
-       
+
+      projects: {
+        Row: {
+          id: string;
+          name: string;
+          description: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          description?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          description?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
     };
-    Views: {
-      
-    };
-    Functions: {
-      
-    };
-    Enums: {
-       
-    };
+    Views: {};
+    Functions: {};
+    Enums: {};
   };
 }
