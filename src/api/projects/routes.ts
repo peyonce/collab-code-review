@@ -1,5 +1,3 @@
-// api/projects/routes.ts
-
 import { Router } from 'express';
 import { createProjectController, getProjectsController } from '../projects/controller.js';
 

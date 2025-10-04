@@ -1,4 +1,4 @@
- {
+{
   "compilerOptions": {
     "target": "ES2020",
     "module": "NodeNext",
@@ -9,7 +9,8 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": ["node"]        // <-- ensures Node types are recognized
   },
   "include": ["src/**/*", "env.d.ts"],
   "exclude": ["node_modules"]
