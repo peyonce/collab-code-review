@@ -1,19 +1,19 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+ import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import type { Database } from '../../database.types.js';
 
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
 
 if (!supabaseUrl) {
-  throw new Error('Missing SUPABASE_URL in environment');
+  throw new Error('Missing SUPABASE_URL');
 }
-if (!supabaseKey) {
-  throw new Error('Missing SUPABASE_SERVICE_ROLE_KEY in environment');
+if (!supabaseAnonKey) {
+  throw new Error('Missing SUPABASE_ANON_KEY');
 }
 
-export const supabase: SupabaseClient<Database> = createClient<Database>(
+export const supabaseClient: SupabaseClient<Database> = createClient<Database>(
   supabaseUrl,
-  supabaseKey
+  supabaseAnonKey
 );
 
- 
+export default supabaseClient;

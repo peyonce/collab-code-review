@@ -44,6 +44,7 @@
         projects:{
           Row: {
             id: string;
+            name: string;
             description: string | null;
             created_at: string;
             updated_at: string;
@@ -51,15 +52,15 @@
           Insert:{
             id?: never;
             name: string;
-            descriptio?: string | null;
+            description?: string | null;
             created_at?: string;
-
             updated_at?: string;
 
           };
           update:{
             id?: never;
             name?: string;
+            created_at?: string;
             description?: string | null;
             updated_at?: string;
           };

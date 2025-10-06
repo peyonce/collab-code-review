@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { supabase } from "../api/auth/supabaseClient.js";
+import { supabaseClient  as supabase} from "../api/auth/supabaseClient.js";
 
 export default async function requireAuth(
   
@@ -18,7 +18,7 @@ export default async function requireAuth(
       return res.status(401).json({ error: "Invalid authorization header format" });
     }
 
-    const { data, error } = await supabase.auth.getUser(token);
+    const { data, error } = await supabase.auth.getUser();
     if (error || !data.user) {
       return res.status(401).json({ error: "Invalid token or user not found" });
     }

@@ -1,6 +1,6 @@
 
- import { supabase } from '../auth/supabaseClient.js';
-import type { InsertOf, RowOf } from '../../database.types.js';
+import { supabaseClient } from '../auth/supabaseClient.js';
+import type { Database, InsertOf, RowOf } from '../../database.types.js';
 
 export type Project = RowOf<'projects'>;
 export type ProjectInsertInput = InsertOf<'projects'>;
@@ -13,9 +13,8 @@ export async function createProject(
    
   const _check: InsertOf<'projects'> = projectData;
 
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClient
     .from('projects')
-    .insert([projectData])      
     .select('*')
     .single();
 
@@ -30,7 +29,7 @@ export async function createProject(
 }
 
 export async function getProjects(): Promise<Project[]> {
-  const { data, error } = await supabase.from('projects').select('*');
+  const { data, error } = await supabaseClient.from('projects').select('*');
   if (error) {
     console.error('[service.getProjects] error:', error);
     throw new Error(error.message);
@@ -39,7 +38,7 @@ export async function getProjects(): Promise<Project[]> {
 }
 
 export async function getProject(id: string): Promise<Project | null> {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClient
     .from('projects')
     .select('*')
     .eq('id', id)

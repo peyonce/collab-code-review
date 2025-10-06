@@ -1,53 +1,37 @@
-  
-import { supabase } from "../auth/supabaseClient.js";
+import { supabaseClient } from '../auth/supabaseClient.js';
+import type { Database } from '../../database.types.js';
 
-interface RegisterInput {
-  email: string;
-  password: string;
-  display_name?: string;
-}
-
-interface LoginInput {
+export interface RegisterParams {
+  name: string;
   email: string;
   password: string;
 }
 
-export async function register(input: RegisterInput) {
-  const { email, password, display_name } = input;
-
-  
-  const { data, error } = await supabase.auth.signUp({
+export async function register({ name, email, password }: RegisterParams) {
+  const { data, error } = await supabaseClient.auth.signUp({
     email,
     password,
     options: {
       data: {
-        display_name,  
+        full_name: name,
       },
     },
   });
+
   if (error) {
     throw error;
   }
-  return data;   
+  return data;
 }
 
-export async function login(input: LoginInput) {
-  const { email, password } = input;
-
-  const { data, error } = await supabase.auth.signInWithPassword({
+export async function login({ email, password }: { email: string; password: string }) {
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
     email,
     password,
   });
-  if (error) {
-    throw error;
-  }
-  return data;  
-}
 
-export async function getUserFromToken(accessToken: string) {
-  const { data, error } = await supabase.auth.getUser(accessToken);
   if (error) {
     throw error;
   }
-  return data.user;
+  return data;
 }
