@@ -1,52 +1,50 @@
-
 import { supabaseClient } from '../auth/supabaseClient.js';
-import type { Database, InsertOf, RowOf } from '../../database.types.js';
-
-export type Project = RowOf<'projects'>;
-export type ProjectInsertInput = InsertOf<'projects'>;
+import type {
+  Project,
+  ProjectInsertInput,
+  ProjectUpdateInput,
+} from '../../database.types.js';
 
 export async function createProject(
   projectData: ProjectInsertInput
 ): Promise<Project> {
-  console.log('[service.createProject] inserting:', projectData);
-
-   
-  const _check: InsertOf<'projects'> = projectData;
-
   const { data, error } = await supabaseClient
     .from('projects')
-    .select('*')
+    .insert([projectData] as never)  
+    .select()
     .single();
 
   if (error) {
-    console.error('[service.createProject] error:', error);
-    throw new Error(error.message);
+    console.error('[createProject] error:', error);
+    throw new Error(`Failed to create project: ${error.message}`);
   }
+
   if (!data) {
     throw new Error('Failed to create project — no data returned.');
   }
+
   return data;
 }
 
-export async function getProjects(): Promise<Project[]> {
-  const { data, error } = await supabaseClient.from('projects').select('*');
-  if (error) {
-    console.error('[service.getProjects] error:', error);
-    throw new Error(error.message);
-  }
-  return data ?? [];
-}
-
-export async function getProject(id: string): Promise<Project | null> {
+export async function updateProject(
+  id: string,
+  updates: ProjectUpdateInput
+): Promise<Project> {
   const { data, error } = await supabaseClient
     .from('projects')
-    .select('*')
+    .update(updates as never)  
     .eq('id', id)
+    .select()
     .single();
 
   if (error) {
-    console.error('[service.getProject] error:', error);
-    throw new Error(error.message);
+    console.error('[updateProject] error:', error);
+    throw new Error(`Failed to update project: ${error.message}`);
   }
+
+  if (!data) {
+    throw new Error('Failed to update project — no data returned.');
+  }
+
   return data;
 }

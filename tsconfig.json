@@ -10,7 +10,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "types": ["node"]        // <-- ensures Node types are recognized
+    "types": ["node"]         
   },
   "include": ["src/**/*", "env.d.ts"],
   "exclude": ["node_modules"]

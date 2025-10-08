@@ -1,82 +1,106 @@
-  export type Json = string | number | null | { [key: string] : Json |undefined} | Json[];
+     export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[];
 
-  export interface Database {
-    public:{
-      Tables:{
-        users:{
-          Row:{
-            id: string;
-            name: string;
-            email: string;
-            created_at: string;
-          };
-          Insert:{
-            id?: never;
-            name: string;
-            email: string;
-            created_at?: string;
-          };
-          update:{
-            id?: string;
-            name?: never;
-            email?: string;
-            created_at?: string;
-          };
+// ======================
+// 🗃️ Supabase Database Schema
+// ======================
+
+export interface Database {
+  public: {
+    Tables: {
+      users: {
+        Row: {
+          id: string;
+          name: string;
+          email: string;
+          created_at: string;
         };
-        profile:{
-          Row:{
-            id: string;
-            users: string;
-            bio: string | null
-          };
-          Insert:{
-            id: never;
-            user_id: string;
-            bio:string | null;
-          };
-          update:{
-            id?: never;
-            user_id?: string;
-            bio?: string | null;
-          };
+        Insert: {
+          id?: never;  // id auto-generated
+          name: string;
+          email: string;
+          created_at?: string;
         };
-
-        projects:{
-          Row: {
-            id: string;
-            name: string;
-            description: string | null;
-            created_at: string;
-            updated_at: string;
-          };
-          Insert:{
-            id?: never;
-            name: string;
-            description?: string | null;
-            created_at?: string;
-            updated_at?: string;
-
-          };
-          update:{
-            id?: never;
-            name?: string;
-            created_at?: string;
-            description?: string | null;
-            updated_at?: string;
-          };
+        Update: {
+          id?: string;
+          name?: string;
+          email?: string;
+          created_at?: string;
         };
       };
-      View: {};
-      Function: {};
-      Enums: {};
+
+      profile: {
+        Row: {
+          id: string;
+          user_id: string;
+          bio: string | null;
+        };
+        Insert: {
+          id?: never;
+          user_id: string;
+          bio: string | null;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          bio?: string | null;
+        };
+      };
+
+      projects: {
+        Row: {
+          id: string;
+          name: string;
+          description: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: never;
+          name: string;
+          description?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;  // Allow id in update type
+          name?: string;
+          description?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
     };
-  }
 
-  export type RowOf<TableName extends keyof Database['public']['Tables']> =
-  Database['public']['Tables'][TableName]['Row'];
+    Views: {};
+    Functions: {};
+    Enums: {};
+  };
+}
 
-  export type InsertOf<TableName extends keyof Database['public']['Tables']> =
-  Database['public']['Tables'][TableName]['Insert'];
+// ==========================
+// 🔁 Type Utilities
+// ==========================
 
-  export type updatedOf<TableName extends keyof Database['public']['Tables']> =
-  Database['public']['Tables'][TableName]['update'];
+export type RowOf<
+  TableName extends keyof Database['public']['Tables']
+> = Database['public']['Tables'][TableName]['Row'];
+
+export type InsertOf<
+  TableName extends keyof Database['public']['Tables']
+> = Database['public']['Tables'][TableName]['Insert'];
+
+export type UpdateOf<
+  TableName extends keyof Database['public']['Tables']
+> = Database['public']['Tables'][TableName]['Update'];
+
+// ===== Export project types for easy import =====
+
+export type Project = RowOf<'projects'>;
+export type ProjectInsertInput = InsertOf<'projects'>;
+export type ProjectUpdateInput = UpdateOf<'projects'>;
